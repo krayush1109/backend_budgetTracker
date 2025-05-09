@@ -38,6 +38,15 @@ public class IncomeServiceImpl implements IncomeService{
     }
 
     
+
+public Income getIncomeByUserId(String email){
+    Optional<User> userOptional = userRepo.findByEmail(email);
+    long id = userOptional.get().getUserId();
+    System.out.println(id+"------------------------------------------------------");
+    Income income = incomeRepo.findByUserUserId(id);
+    System.out.println(income+"------------------------------------------------------");
+    return income;
+}
  
   @Override
 public List<Income> getAllIncomes() throws NoIncomesFoundException {

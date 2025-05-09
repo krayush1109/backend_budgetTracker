@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.personalbudgettracker.budgettracker.model.Expense;
+import com.personalbudgettracker.budgettracker.model.Income;
 import com.personalbudgettracker.budgettracker.model.User;
 import com.personalbudgettracker.budgettracker.repository.ExpenseRepo;
 import com.personalbudgettracker.budgettracker.repository.UserRepo;
@@ -25,6 +26,13 @@ public class ExpenseService {
 
     public Expense getExpenseById(Long id) {
         return expenseRepository.findById(id).orElse(null);
+    }
+
+    public List<Expense> getExpenseById(String email){
+         Optional<User> userOptional = userRepo.findByEmail(email);
+         long id = userOptional.get().getUserId();
+         List<Expense> expense = expenseRepository.findByUserUserId(id);
+         return expense;
     }
 
     public Expense saveExpense(String email,Expense expense) {

@@ -2,9 +2,11 @@ package com.personalbudgettracker.budgettracker.controller;
  
 import com.personalbudgettracker.budgettracker.exceptions.IncomeNotFoundException;
 import com.personalbudgettracker.budgettracker.exceptions.NoIncomesFoundException;
+import com.personalbudgettracker.budgettracker.model.Expense;
 import com.personalbudgettracker.budgettracker.model.Income;
 import com.personalbudgettracker.budgettracker.service.IncomeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +27,15 @@ public class IncomeController {
         return ResponseEntity.ok(savedIncome);
     }
  
-  @GetMapping
+
+     @GetMapping("/user")
+    public ResponseEntity<Income> getIncomeByUserId(Authentication authentication) {
+        String email = authentication.getName(); 
+        Income income =incomeService.getIncomeByUserId(email);
+        return ResponseEntity.status(HttpStatus.OK).body(income);
+    }
+
+    @GetMapping
     public ResponseEntity<?> getAllIncomes() {
         try {
             List<Income> incomeList = incomeService.getAllIncomes();
@@ -50,6 +60,8 @@ public class IncomeController {
         }
     }
  
+
+
     @PutMapping("/update/{incomeId}")
     public ResponseEntity<?> updateIncome(Authentication authentication, @PathVariable Long incomeId, @RequestBody Income updatedIncome) {
         try {

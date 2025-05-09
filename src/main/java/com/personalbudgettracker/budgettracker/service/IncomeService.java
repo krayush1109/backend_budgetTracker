@@ -10,4 +10,5 @@ public interface IncomeService {
     Income getIncomeById(Long incomeId);
     Income updateIncome(String email,Long incomeId, Income updatedIncome);
     void deleteIncome(Long incomeId);  
+    Income getIncomeByUserId(String email);
 }

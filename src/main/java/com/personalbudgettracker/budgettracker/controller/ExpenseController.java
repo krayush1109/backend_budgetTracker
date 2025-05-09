@@ -11,6 +11,9 @@ import com.personalbudgettracker.budgettracker.model.Expense;
 import com.personalbudgettracker.budgettracker.service.ExpenseService;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/expenses")
@@ -32,6 +35,13 @@ public class ExpenseController {
         return ResponseEntity.ok(expense);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<List<Expense>> getExpenseByUserId(Authentication authentication) {
+        String email = authentication.getName(); 
+        return ResponseEntity.status(HttpStatus.OK).body(expenseService.getExpenseById(email));
+     
+    }
+    
     @PostMapping
     public ResponseEntity<Expense> createExpense(Authentication authentication,@RequestBody Expense expense) {
         try {
